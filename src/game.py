@@ -2,6 +2,7 @@ from src.board import Board
 from src.connect4 import Connect4
 from src.gui import GUI
 
+
 class Game:
     def __init__(self):
         self.rows = 6
