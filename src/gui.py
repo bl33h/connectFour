@@ -1,3 +1,5 @@
+import math
+
 import pygame
 
 
@@ -10,7 +12,7 @@ class GUI:
 
         self.screen = pygame.display.set_mode(self.size)
 
-    def run(self) -> None:
+    def run(self, on_click: callable) -> None:
         """
         Run the game
         """
@@ -28,7 +30,9 @@ class GUI:
                     pass
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pass
+                    x_pos = event.pos[0]
+                    col = int(math.floor(x_pos / self.square_size))
+                    on_click(col)
 
     def draw_board(self) -> None:
         """

@@ -15,45 +15,30 @@ class Connect4:
 
         self.turn = 1  # 1 for player 1, 2 for player 2
 
+    def on_click(self, col: int) -> None:
+        """
+        Handle click event
+        """
+        # If the column isn't full
+        if self.board.is_valid_location(col):
+            # Get where the piece will be dropped
+            row = self.board.get_next_open_row(col)
+            # Drop the piece
+            someone_won = self.board.drop_piece(row, col, self.turn)
+
+            # Print the board
+            self.board.print()
+
+            # Check if the game is over
+            self.is_game_over(someone_won)
+
+            # Changes turns
+            self.turn = (self.turn % 2) + 1
+
     def play(self) -> None:
         self.board.reset()
         gui = GUI()
-        gui.run()
-
-        # while not self.game_over:
-            #
-            # someone_won = False
-            #
-            # # Player 1's turn
-            # if self.turn == 1:
-            #     col = int(input("Player 1: Column? (0-6): "))
-            #
-            #     # If the column isn't full
-            #     if self.board.is_valid_location(col):
-            #         # Get where the piece will be dropped
-            #         row = self.board.get_next_open_row(col)
-            #         # Drop the piece
-            #         someone_won = self.board.drop_piece(row, col, 1)
-            #
-            # # Player 2's turn
-            # else:
-            #     col = int(input("Player 2: Column? (0-6): "))
-            #
-            #     # If the column isn't full
-            #     if self.board.is_valid_location(col):
-            #         # Get where the piece will be dropped
-            #         row = self.board.get_next_open_row(col)
-            #         # Drop the piece
-            #         someone_won = self.board.drop_piece(row, col, 2)
-            #
-            # # Print the board
-            # self.board.print()
-            #
-            # # Check if the game is over
-            # self.is_game_over(someone_won)
-            #
-            # # Changes turns
-            # self.turn = (self.turn % 2) + 1
+        gui.run(self.on_click)
 
     def is_game_over(self, did_winning_move: bool = False) -> None:
         """
