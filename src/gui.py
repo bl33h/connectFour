@@ -32,7 +32,8 @@ class GUI:
                     return
 
                 if event.type == pygame.MOUSEMOTION:
-                    pass
+                    x_pos = event.pos[0]
+                    self.show_piece_to_drop(x_pos)
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x_pos = event.pos[0]
@@ -76,3 +77,16 @@ class GUI:
         """
         self.board_state = board
         self.draw_board()
+
+    def show_piece_to_drop(self, x_pos) -> None:
+        """
+        Show the piece to drop
+        """
+        pygame.draw.rect(self.screen, (0, 0, 0), (0, 0, self.width, self.square_size))
+        pygame.draw.circle(
+            self.screen,
+            (255, 0, 0) if self.game.turn == 1 else (255, 255, 0),
+            (x_pos, int(self.square_size / 2)),
+            int(self.square_size / 2 - 5)
+        )
+        pygame.display.update()
