@@ -7,6 +7,9 @@ from src.connect4 import Connect4
 
 class GUI:
     def __init__(self, game: Connect4):
+        pygame.init()
+        pygame.font.init()
+
         self.square_size = 100  # Size of each square, pixels
 
         self.game = game
@@ -19,11 +22,12 @@ class GUI:
 
         self.screen = pygame.display.set_mode(self.size)
 
+        self.font = pygame.font.SysFont('monospace', 75)
+
     def run(self) -> None:
         """
         Run the game
         """
-        pygame.init()
         self.draw_board()
         while not self.game.is_game_over:
             for event in pygame.event.get():
@@ -40,6 +44,19 @@ class GUI:
                     col = int(math.floor(x_pos / self.square_size))
                     self.game.drop_piece(col)
                     self.draw_board()
+
+        # Game over
+        pygame.draw.rect(self.screen, (0, 0, 0), (0, 0, self.width, self.square_size))
+        self.game.turn = (self.game.turn % 2) + 1
+        label = self.font.render(
+            f"Player {self.game.turn} wins!",
+            1,
+            (255, 0, 0) if self.game.turn == 1 else (255, 255, 0)
+        )
+        self.screen.blit(label, (40, 10))
+        pygame.display.update()
+        pygame.time.wait(3000)
+        pygame.quit()
 
     def draw_board(self) -> None:
         """
