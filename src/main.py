@@ -1,9 +1,9 @@
-from src.connect4 import Connect4
+from src.game import Game
 
 
 def main():
-    c4 = Connect4()
-    c4.play()
+    game = Game()
+    game.play()
 
 
 if __name__ == "__main__":
