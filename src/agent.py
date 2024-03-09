@@ -1,7 +1,7 @@
 class MinimaxAgent:
     def __init__(self, use_alpha_beta=True):
         self.use_alpha_beta = use_alpha_beta
-        self.max_depth = 4
+        self.max_depth = 4  # Profundidad máxima de búsqueda
 
     def set_alpha_beta(self, use_alpha_beta):
         self.use_alpha_beta = use_alpha_beta
@@ -52,3 +52,11 @@ class MinimaxAgent:
                 best_move = col
 
         return best_move
+
+    def evaluate(self, state):
+        if state.check_winner(1):
+            return 1000
+        elif state.check_winner(2):
+            return -1000
+        else:
+            return 0
