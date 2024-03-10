@@ -1,3 +1,4 @@
+from src.agents.minimax import MiniMax
 from src.board import Board
 
 
@@ -7,8 +8,15 @@ class Connect4:
     Reference: https://www.youtube.com/watch?v=XpYz-q1lxu8
     """
 
-    def __init__(self, board: Board = None):
+    def __init__(self, board: Board = None, mode: str = 'pvai', use_alpha_beta: bool = False):
         self.board = board
+        self.mode = mode
+
+        self.agent1 = None
+        self.agent2 = MiniMax(use_alpha_beta=use_alpha_beta)
+        if mode == 'aivai':
+            self.agent1 = MiniMax(use_alpha_beta=use_alpha_beta)
+
         self.is_game_over = False
 
         self.turn = 1  # 1 for player 1, 2 for player 2
@@ -24,8 +32,6 @@ class Connect4:
             # Drop the piece
             someone_won = self.board.drop_piece(row, col, self.turn)
 
-            self.board.print()
-
             # Check if the game is over
             self.check_game_over(someone_won)
 
@@ -37,6 +43,5 @@ class Connect4:
         Check if the game is over
         """
         if did_winning_move:
-            print(f"Player {self.turn} wins!")
             self.is_game_over = True
             return

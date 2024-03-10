@@ -1,4 +1,7 @@
-class MinimaxAgent:
+import numpy as np
+
+
+class MiniMax:
     def __init__(self, use_alpha_beta=True):
         self.use_alpha_beta = use_alpha_beta
         self.max_depth = 4  # Profundidad máxima de búsqueda
@@ -8,7 +11,7 @@ class MinimaxAgent:
 
     def minimax(self, state, depth, maximizing_player, alpha, beta):
         if depth == 0 or state.is_game_over():
-            return self.evaluate(state)
+            return 0
 
         valid_moves = [col for col in range(state.columns) if state.is_valid_location(col)]
 
@@ -38,25 +41,17 @@ class MinimaxAgent:
             return min_eval
 
     def get_best_move(self, state):
-        best_eval = float('-inf')
-        best_move = None
-        valid_moves = [col for col in range(state.columns) if state.is_valid_location(col)]
+        # best_eval = float('-inf')
+        # best_move = None
+        # valid_moves = [col for col in range(state.columns) if state.is_valid_location(col)]
+        #
+        # for col in valid_moves:
+        #     next_state = state.copy()
+        #     row = next_state.get_next_open_row(col)
+        #     next_state.drop_piece(row, col, 1)
+        #     eval = self.minimax(next_state, self.max_depth, False, float('-inf'), float('inf'))
+        #     if eval > best_eval:
+        #         best_eval = eval
+        #         best_move = col
 
-        for col in valid_moves:
-            next_state = state.copy()
-            row = next_state.get_next_open_row(col)
-            next_state.drop_piece(row, col, 1)
-            eval = self.minimax(next_state, self.max_depth, False, float('-inf'), float('inf'))
-            if eval > best_eval:
-                best_eval = eval
-                best_move = col
-
-        return best_move
-
-    def evaluate(self, state):
-        if state.check_winner(1):
-            return 1000
-        elif state.check_winner(2):
-            return -1000
-        else:
-            return 0
+        return np.random.choice([col for col in range(state.columns) if state.is_valid_location(col)])

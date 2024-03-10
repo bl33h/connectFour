@@ -29,25 +29,51 @@ class GUI:
         Run the game
         """
         self.draw_board()
-        while not self.game.is_game_over:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    return
+        if self.game.mode == 'pvai':
+            while not self.game.is_game_over:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        return
 
-                if event.type == pygame.MOUSEMOTION:
-                    x_pos = event.pos[0]
-                    self.show_piece_to_drop(x_pos)
+                    if event.type == pygame.MOUSEMOTION:
+                        x_pos = event.pos[0]
+                        self.show_piece_to_drop(x_pos)
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    x_pos = event.pos[0]
-                    col = int(math.floor(x_pos / self.square_size))
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        x_pos = event.pos[0]
+                        col = int(math.floor(x_pos / self.square_size))
+                        self.game.drop_piece(col)
+                        self.draw_board()
+
+                        # Automatically make the AI move
+                        if not self.game.is_game_over:
+                            pygame.time.wait(250)  # Artificial delay
+                            col = self.game.agent2.get_best_move(self.game.board)
+                            self.game.drop_piece(col)
+                            self.draw_board()
+        else:  # AI vs AI
+            while not self.game.is_game_over:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        return
+
+                if self.game.turn == 1:
+                    col = self.game.agent1.get_best_move(self.game.board)
+                    self.game.drop_piece(col)
+                    self.draw_board()
+                else:
+                    col = self.game.agent2.get_best_move(self.game.board)
                     self.game.drop_piece(col)
                     self.draw_board()
 
+                # Delay each drop
+                pygame.time.wait(500)
+
         # Game over
         pygame.draw.rect(self.screen, (0, 0, 0), (0, 0, self.width, self.square_size))
-        self.game.turn = (self.game.turn % 2) + 1
+        self.game.turn = (self.game.turn % 2) + 1  # Change turn to the winner
         label = self.font.render(
             f"Player {self.game.turn} wins!",
             1,
@@ -91,7 +117,6 @@ class GUI:
         """
         Update the board
         """
-        self.board_state = board
         self.draw_board()
 
     def show_piece_to_drop(self, x_pos) -> None:
