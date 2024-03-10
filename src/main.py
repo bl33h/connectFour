@@ -1,9 +1,9 @@
-from src.game import Game
+from src.main_menu import MainMenu
 
 
 def main():
-    game = Game()
-    game.play()
+    menu = MainMenu()
+    menu.run()
 
 
 if __name__ == "__main__":

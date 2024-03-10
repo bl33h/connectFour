@@ -4,7 +4,7 @@ from src.gui import GUI
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, mode: str, pruning: bool):
         self.rows = 6
         self.columns = 7
         self.board = Board(rows=self.rows, columns=self.columns)

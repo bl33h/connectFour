@@ -13,84 +13,36 @@ class Board:
     def drop_piece(self, row: int, col: int, piece: int) -> bool:
         self.state[row][col] = piece
 
-        return self._is_winning_move(row, col, piece)
+        return self._is_winning_move(piece)
 
-    def _is_winning_move(self, row: int, col: int, piece: int) -> bool:
-        # Check north of where the piece was dropped
-        if (
-                row < self.rows - 3 and  # Make sure we don't go out of bounds
-                self.state[row + 1][col] == piece and  # Check the pieces above
-                self.state[row + 2][col] == piece and
-                self.state[row + 3][col] == piece
-        ):
-            return True
+    def _is_winning_move(self, piece: int) -> bool:
+        # Check horizontal locations for win
+        for c in range(self.columns - 3):
+            for r in range(self.rows):
+                if self.state[r][c] == piece and self.state[r][c + 1] == piece and self.state[r][c + 2] == piece and \
+                        self.state[r][c + 3] == piece:
+                    return True
 
-        # Check north-east of where the piece was dropped
-        elif (
-                row < self.rows - 3 and  # Make sure we don't go out of bounds
-                col < self.columns - 3 and  # Make sure we don't go out of bounds
-                self.state[row + 1][col + 1] == piece and  # Check the pieces above
-                self.state[row + 2][col + 2] == piece and
-                self.state[row + 3][col + 3] == piece
-        ):
-            return True
+        # Check vertical locations for win
+        for c in range(self.columns):
+            for r in range(self.rows - 3):
+                if self.state[r][c] == piece and self.state[r + 1][c] == piece and self.state[r + 2][c] == piece and \
+                        self.state[r + 3][c] == piece:
+                    return True
 
-        # Check east of where the piece was dropped
-        elif (
-                col < self.columns - 3 and  # Make sure we don't go out of bounds
-                self.state[row][col + 1] == piece and  # Check the pieces to the right
-                self.state[row][col + 2] == piece and
-                self.state[row][col + 3] == piece
-        ):
-            return True
+        # Check positively sloped diagonals
+        for c in range(self.columns - 3):
+            for r in range(self.rows - 3):
+                if self.state[r][c] == piece and self.state[r + 1][c + 1] == piece and self.state[r + 2][c + 2] == piece and \
+                        self.state[r + 3][c + 3] == piece:
+                    return True
 
-        # Check south-east of where the piece was dropped
-        elif (
-                row > 2 and  # Make sure we don't go out of bounds
-                col < self.columns - 3 and  # Make sure we don't go out of bounds
-                self.state[row - 1][col + 1] == piece and  # Check the pieces below
-                self.state[row - 2][col + 2] == piece and
-                self.state[row - 3][col + 3] == piece
-        ):
-            return True
-
-        # Check south of where the piece was dropped
-        elif (
-                row > 2 and  # Make sure we don't go out of bounds
-                self.state[row - 1][col] == piece and  # Check the pieces below
-                self.state[row - 2][col] == piece and
-                self.state[row - 3][col] == piece
-        ):
-            return True
-
-        # Check south-west of where the piece was dropped
-        elif (
-                row > 2 and  # Make sure we don't go out of bounds
-                col > 2 and  # Make sure we don't go out of bounds
-                self.state[row - 1][col - 1] == piece and  # Check the pieces below
-                self.state[row - 2][col - 2] == piece and
-                self.state[row - 3][col - 3] == piece
-        ):
-            return True
-
-        # Check west of where the piece was dropped
-        elif (
-                col > 2 and  # Make sure we don't go out of bounds
-                self.state[row][col - 1] == piece and  # Check the pieces to the left
-                self.state[row][col - 2] == piece and
-                self.state[row][col - 3] == piece
-        ):
-            return True
-
-        # Check north-west of where the piece was dropped
-        elif (
-                row < self.rows - 3 and  # Make sure we don't go out of bounds
-                col > 2 and  # Make sure we don't go out of bounds
-                self.state[row + 1][col - 1] == piece and  # Check the pieces above
-                self.state[row + 2][col - 2] == piece and
-                self.state[row + 3][col - 3] == piece
-        ):
-            return True
+        # Check negatively sloped diagonals
+        for c in range(self.columns - 3):
+            for r in range(3, self.rows):
+                if self.state[r][c] == piece and self.state[r - 1][c + 1] == piece and self.state[r - 2][c + 2] == piece and \
+                        self.state[r - 3][c + 3] == piece:
+                    return True
 
         # It isn't a winning move
         else:
