@@ -13,21 +13,21 @@ class MainMenu:
         self.button_font = pygame.font.Font(None, 36)
         self.title = self.font.render("Game Menu", True, (255, 255, 255))
         self.title_rect = self.title.get_rect(center=(400, 80))
-        self.pvp_button = pygame.Rect(300, 200, 200, 50)
-        self.pvai_button = pygame.Rect(300, 300, 200, 50)
+        self.pvai_button = pygame.Rect(300, 200, 200, 50)
+        self.aivai_button = pygame.Rect(300, 300, 200, 50)
         self.alpha_beta_toggle = pygame.Rect(300, 400, 200, 50)
         self.alpha_beta_enabled = False
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.pvp_button.collidepoint(event.pos):
-                game = Game('pvp', self.alpha_beta_enabled)
+            if self.pvai_button.collidepoint(event.pos):
+                game = Game('pvai', self.alpha_beta_enabled)
                 game.play()
                 if not game.is_active:  # check if the game is still active
                     return False  # return False to indicate that the game has ended
 
-            elif self.pvai_button.collidepoint(event.pos):
-                game = Game('pvai', self.alpha_beta_enabled)
+            elif self.aivai_button.collidepoint(event.pos):
+                game = Game('aivai', self.alpha_beta_enabled)
                 game.play()
                 if not game.is_active:  # check if the game is still active
                     return False  # return False to indicate that the game has ended
@@ -50,8 +50,8 @@ class MainMenu:
     def draw(self):
         self.screen.fill((0, 0, 0))
         self.screen.blit(self.title, self.title_rect)
-        self.draw_button(self.pvp_button, "PvP", self.button_font)
         self.draw_button(self.pvai_button, "PvAI", self.button_font)
+        self.draw_button(self.aivai_button, "AIvAI", self.button_font)
         self.draw_button(self.alpha_beta_toggle, "Alpha-Beta Pruning: " + ("ON" if self.alpha_beta_enabled else "OFF"),
                          self.button_font)
 
