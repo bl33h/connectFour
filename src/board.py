@@ -2,10 +2,10 @@ import numpy as np
 
 
 class Board:
-    def __init__(self, rows: int = 6, columns: int = 7):
+    def __init__(self, rows: int = 6, columns: int = 7, state: np.ndarray = None):
         self.rows = rows
         self.columns = columns
-        self.state = np.zeros((rows, columns))
+        self.state = np.zeros((rows, columns)) if state is None else state
 
     def reset(self) -> None:
         self.state = np.zeros((self.rows, self.columns))
@@ -33,14 +33,16 @@ class Board:
         # Check positively sloped diagonals
         for c in range(self.columns - 3):
             for r in range(self.rows - 3):
-                if self.state[r][c] == piece and self.state[r + 1][c + 1] == piece and self.state[r + 2][c + 2] == piece and \
+                if self.state[r][c] == piece and self.state[r + 1][c + 1] == piece and self.state[r + 2][
+                    c + 2] == piece and \
                         self.state[r + 3][c + 3] == piece:
                     return True
 
         # Check negatively sloped diagonals
         for c in range(self.columns - 3):
             for r in range(3, self.rows):
-                if self.state[r][c] == piece and self.state[r - 1][c + 1] == piece and self.state[r - 2][c + 2] == piece and \
+                if self.state[r][c] == piece and self.state[r - 1][c + 1] == piece and self.state[r - 2][
+                    c + 2] == piece and \
                         self.state[r - 3][c + 3] == piece:
                     return True
 
@@ -54,6 +56,16 @@ class Board:
         """
         # If the columns is full, the top row will not be 0
         return self.state[self.rows - 1][column] == 0
+
+    def get_valid_locations(self) -> list:
+        """
+        Get the valid locations where a piece can be dropped
+        """
+        valid_locations = []
+        for col in range(self.columns):
+            if self.is_valid_location(col):
+                valid_locations.append(col)
+        return valid_locations
 
     def get_next_open_row(self, column: int) -> int:
         """
@@ -71,3 +83,10 @@ class Board:
 
     def get_state_flipped(self):
         return np.flip(self.state, 0)
+
+    def copy(self) -> 'Board':
+        return Board(
+            rows=self.rows,
+            columns=self.columns,
+            state=self.state.copy()
+        )

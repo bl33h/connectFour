@@ -49,7 +49,7 @@ class GUI:
                         # Automatically make the AI move
                         if not self.game.is_game_over:
                             pygame.time.wait(250)  # Artificial delay
-                            col = self.game.agent2.get_best_move(self.game.board)
+                            col = self.game.agent2.get_best_move()
                             self.game.drop_piece(col)
                             self.draw_board()
         else:  # AI vs AI
@@ -60,11 +60,11 @@ class GUI:
                         return
 
                 if self.game.turn == 1:
-                    col = self.game.agent1.get_best_move(self.game.board)
+                    col = self.game.agent1.get_best_move()
                     self.game.drop_piece(col)
                     self.draw_board()
                 else:
-                    col = self.game.agent2.get_best_move(self.game.board)
+                    col = self.game.agent2.get_best_move()
                     self.game.drop_piece(col)
                     self.draw_board()
 

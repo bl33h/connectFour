@@ -13,9 +13,9 @@ class Connect4:
         self.mode = mode
 
         self.agent1 = None
-        self.agent2 = MiniMax(use_alpha_beta=use_alpha_beta)
+        self.agent2 = MiniMax(board=self.board, piece=2, use_alpha_beta=use_alpha_beta)
         if mode == 'aivai':
-            self.agent1 = MiniMax(use_alpha_beta=use_alpha_beta)
+            self.agent1 = MiniMax(board=self.board, piece=1, use_alpha_beta=use_alpha_beta)
 
         self.is_game_over = False
 

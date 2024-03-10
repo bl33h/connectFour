@@ -1,57 +1,90 @@
 import numpy as np
 
+from src.board import Board
+
 
 class MiniMax:
-    def __init__(self, use_alpha_beta=True):
+    def __init__(self, board: Board, piece: int, use_alpha_beta=True):
+        self.board = board
+        self.piece = piece  # The int that represents the agent's piece
         self.use_alpha_beta = use_alpha_beta
         self.max_depth = 4  # Profundidad máxima de búsqueda
 
-    def set_alpha_beta(self, use_alpha_beta):
-        self.use_alpha_beta = use_alpha_beta
+    def score_position(self, board: np.ndarray, piece: int) -> int:
+        """
+        Evaluar el tablero
+        """
+        score = 0
+        # Each 'window' is a section of 4 adjacent locations in the board
 
-    def minimax(self, state, depth, maximizing_player, alpha, beta):
-        if depth == 0 or state.is_game_over():
-            return 0
+        # Score Center Column
+        center_array = [int(i) for i in list(board[:, self.board.columns // 2])]
+        center_count = center_array.count(piece)
+        score += center_count * 3
 
-        valid_moves = [col for col in range(state.columns) if state.is_valid_location(col)]
+        # Score Horizontal
+        for r in range(board.shape[0]):
+            row_array = [int(i) for i in list(board[r, :])]
+            for c in range(board.shape[1] - 3):
+                window = row_array[c:c + 4]
+                score += self.evaluate_window(window)
 
-        if maximizing_player:
-            max_eval = float('-inf')
-            for col in valid_moves:
-                next_state = state.copy()
-                row = next_state.get_next_open_row(col)
-                next_state.drop_piece(row, col, 1)
-                eval = self.minimax(next_state, depth - 1, False, alpha, beta)
-                max_eval = max(max_eval, eval)
-                alpha = max(alpha, eval)
-                if self.use_alpha_beta and beta <= alpha:
-                    break
-            return max_eval
-        else:
-            min_eval = float('inf')
-            for col in valid_moves:
-                next_state = state.copy()
-                row = next_state.get_next_open_row(col)
-                next_state.drop_piece(row, col, 2)
-                eval = self.minimax(next_state, depth - 1, True, alpha, beta)
-                min_eval = min(min_eval, eval)
-                beta = min(beta, eval)
-                if self.use_alpha_beta and beta <= alpha:
-                    break
-            return min_eval
+        # Score Vertical
+        for c in range(board.shape[1]):
+            col_array = [int(i) for i in list(board[:, c])]
+            for r in range(board.shape[0] - 3):
+                window = col_array[r:r + 4]
+                score += self.evaluate_window(window)
 
-    def get_best_move(self, state):
-        # best_eval = float('-inf')
-        # best_move = None
-        # valid_moves = [col for col in range(state.columns) if state.is_valid_location(col)]
-        #
-        # for col in valid_moves:
-        #     next_state = state.copy()
-        #     row = next_state.get_next_open_row(col)
-        #     next_state.drop_piece(row, col, 1)
-        #     eval = self.minimax(next_state, self.max_depth, False, float('-inf'), float('inf'))
-        #     if eval > best_eval:
-        #         best_eval = eval
-        #         best_move = col
+        # Score positive sloped diagonal
+        for r in range(board.shape[0] - 3):
+            for c in range(board.shape[1] - 3):
+                window = [board[r + i][c + i] for i in range(4)]
+                score += self.evaluate_window(window)
 
-        return np.random.choice([col for col in range(state.columns) if state.is_valid_location(col)])
+        # Score negative sloped diagonal
+        for r in range(board.shape[0] - 3):
+            for c in range(board.shape[1] - 3):
+                window = [board[r + 3 - i][c + i] for i in range(4)]
+                score += self.evaluate_window(window)
+
+        return score
+
+    def evaluate_window(self, window: list) -> int:
+        """
+        Evaluar la ventana
+        """
+        score = 0
+        opponent_piece = self.piece % 2 + 1
+
+        if window.count(self.piece) == 4:  # Winning move
+            score += 1_000
+        elif window.count(self.piece) == 3 and window.count(0) == 1:  # 3 in a row
+            score += 5
+        elif window.count(self.piece) == 2 and window.count(0) == 2:  # 2 in a row
+            score += 2
+
+        if window.count(opponent_piece) == 3 and window.count(0) == 1:  # Block opponent's 3 in a row
+            score -= 100
+
+        return score
+
+    def get_best_move(self) -> int:
+        """
+        Obtener el mejor movimiento
+        """
+        valid_locations = self.board.get_valid_locations()
+
+        best_score = 0
+        best_col = np.random.choice(valid_locations)
+
+        for col in valid_locations:
+            row = self.board.get_next_open_row(col)
+            temp_board = self.board.copy()
+            temp_board.drop_piece(row, col, self.piece)
+            score = self.score_position(temp_board.state, self.piece)
+            if score > best_score:
+                best_score = score
+                best_col = col
+
+        return best_col
