@@ -11,6 +11,9 @@ class Game:
         self.connect4 = Connect4(self.board)
         self.gui = GUI(game=self.connect4)
 
+        self.is_active = True
+
     def play(self):
         self.connect4.board.reset()
         self.gui.run()
+        self.is_active = False

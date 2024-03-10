@@ -56,7 +56,6 @@ class GUI:
         self.screen.blit(label, (40, 10))
         pygame.display.update()
         pygame.time.wait(3000)
-        pygame.quit()
 
     def draw_board(self) -> None:
         """

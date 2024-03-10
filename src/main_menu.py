@@ -21,18 +21,21 @@ class MainMenu:
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.pvp_button.collidepoint(event.pos):
-                Game(
-                    'pvp',
-                    self.alpha_beta_enabled
-                ).play()
+                game = Game('pvp', self.alpha_beta_enabled)
+                game.play()
+                if not game.is_active:  # check if the game is still active
+                    return False  # return False to indicate that the game has ended
 
             elif self.pvai_button.collidepoint(event.pos):
-                Game(
-                    'pvai',
-                    self.alpha_beta_enabled
-                ).play()
+                game = Game('pvai', self.alpha_beta_enabled)
+                game.play()
+                if not game.is_active:  # check if the game is still active
+                    return False  # return False to indicate that the game has ended
+
             elif self.alpha_beta_toggle.collidepoint(event.pos):
                 self.alpha_beta_enabled = not self.alpha_beta_enabled
+
+        return True  # return True to indicate that the game is still active
 
     def draw_text(self, text, rect, font):
         text_surface = font.render(text, True, (255, 255, 255))
@@ -58,7 +61,9 @@ class MainMenu:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                self.handle_event(event)
+
+                if not self.handle_event(event):  # check if the game is still active
+                    return  # return from the run method if the game has ended
 
             self.draw()
             pygame.display.flip()
