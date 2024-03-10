@@ -10,12 +10,16 @@ class Board:
     def reset(self) -> None:
         self.state = np.zeros((self.rows, self.columns))
 
-    def drop_piece(self, row: int, col: int, piece: int) -> bool:
+    def drop_piece(self, row: int, col: int, piece: int) -> None:
         self.state[row][col] = piece
 
-        return self._is_winning_move(piece)
+    def is_game_over(self) -> bool:
+        return self.is_full() or self.is_winning_move(1) or self.is_winning_move(2)
 
-    def _is_winning_move(self, piece: int) -> bool:
+    def is_full(self) -> bool:
+        return 0 not in self.state[self.rows - 1]
+
+    def is_winning_move(self, piece: int) -> bool:
         # Check horizontal locations for win
         for c in range(self.columns - 3):
             for r in range(self.rows):
@@ -55,7 +59,7 @@ class Board:
         Check if the column is not full
         """
         # If the columns is full, the top row will not be 0
-        return self.state[self.rows - 1][column] == 0
+        return np.all(self.state[self.rows - 1][column] == 0)
 
     def get_valid_locations(self) -> list:
         """

@@ -16,7 +16,7 @@ class MainMenu:
         self.pvai_button = pygame.Rect(300, 200, 200, 50)
         self.aivai_button = pygame.Rect(300, 300, 200, 50)
         self.alpha_beta_toggle = pygame.Rect(300, 400, 200, 50)
-        self.alpha_beta_enabled = False
+        self.alpha_beta_enabled = True
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:

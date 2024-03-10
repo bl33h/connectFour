@@ -10,7 +10,7 @@ class GUI:
         pygame.init()
         pygame.font.init()
 
-        self.square_size = 100  # Size of each square, pixels
+        self.square_size = 75  # Size of each square, pixels
 
         self.game = game
         self.rows = self.game.board.rows
@@ -22,7 +22,7 @@ class GUI:
 
         self.screen = pygame.display.set_mode(self.size)
 
-        self.font = pygame.font.SysFont('monospace', 75)
+        self.font = pygame.font.SysFont('monospace', 50)
 
     def run(self) -> None:
         """
@@ -48,7 +48,6 @@ class GUI:
 
                         # Automatically make the AI move
                         if not self.game.is_game_over:
-                            pygame.time.wait(250)  # Artificial delay
                             col = self.game.agent2.get_best_move()
                             self.game.drop_piece(col)
                             self.draw_board()
@@ -67,9 +66,6 @@ class GUI:
                     col = self.game.agent2.get_best_move()
                     self.game.drop_piece(col)
                     self.draw_board()
-
-                # Delay each drop
-                pygame.time.wait(500)
 
         # Game over
         pygame.draw.rect(self.screen, (0, 0, 0), (0, 0, self.width, self.square_size))
@@ -113,12 +109,6 @@ class GUI:
 
         pygame.display.update()
 
-    def update_board(self, board: list) -> None:
-        """
-        Update the board
-        """
-        self.draw_board()
-
     def show_piece_to_drop(self, x_pos) -> None:
         """
         Show the piece to drop
@@ -126,7 +116,7 @@ class GUI:
         pygame.draw.rect(self.screen, (0, 0, 0), (0, 0, self.width, self.square_size))
         pygame.draw.circle(
             self.screen,
-            (255, 0, 0) if self.game.turn == 1 else (255, 255, 0),
+            (255, 0, 0),
             (x_pos, int(self.square_size / 2)),
             int(self.square_size / 2 - 5)
         )

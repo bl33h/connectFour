@@ -29,19 +29,12 @@ class Connect4:
         if self.board.is_valid_location(col):
             # Get where the piece will be dropped
             row = self.board.get_next_open_row(col)
-            # Drop the piece
-            someone_won = self.board.drop_piece(row, col, self.turn)
 
-            # Check if the game is over
-            self.check_game_over(someone_won)
+            # Drop the piece
+            self.board.drop_piece(row, col, self.turn)
 
             # Changes turns
             self.turn = (self.turn % 2) + 1
 
-    def check_game_over(self, did_winning_move: bool = False) -> None:
-        """
-        Check if the game is over
-        """
-        if did_winning_move:
-            self.is_game_over = True
-            return
+            # Check if the game is over
+            self.is_game_over = self.board.is_game_over()
