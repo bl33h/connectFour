@@ -1,6 +1,5 @@
-from src.agents.minimax import MiniMax
-from src.board import Board
-
+from agents.minimax import MiniMax
+from board import Board
 
 class Connect4:
     """

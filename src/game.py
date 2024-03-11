@@ -1,7 +1,6 @@
-from src.board import Board
-from src.connect4 import Connect4
-from src.gui import GUI
-
+from board import Board
+from connect4 import Connect4
+from gui import GUI
 
 class Game:
     def __init__(self, mode: str, use_alpha_beta: bool):

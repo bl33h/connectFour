@@ -1,9 +1,6 @@
 import sys
-
 import pygame
-
-from src.game import Game
-
+from game import Game
 
 class MainMenu:
     def __init__(self):
@@ -15,7 +12,9 @@ class MainMenu:
         self.title_rect = self.title.get_rect(center=(400, 80))
         self.pvai_button = pygame.Rect(300, 200, 200, 50)
         self.aivai_button = pygame.Rect(300, 300, 200, 50)
-        self.alpha_beta_toggle = pygame.Rect(300, 400, 200, 50)
+        button_width = 305
+        screen_width = 800
+        self.alpha_beta_toggle = pygame.Rect((screen_width - button_width) / 2, 400, button_width, 50)
         self.alpha_beta_enabled = True
 
     def handle_event(self, event):
@@ -44,11 +43,11 @@ class MainMenu:
         self.screen.blit(text_surface, text_rect)  # blit the text surface at the center of the button
 
     def draw_button(self, rect, text, font):
-        pygame.draw.rect(self.screen, (0, 0, 255), rect)
+        pygame.draw.rect(self.screen, (24, 138, 225), rect)
         self.draw_text(text, rect, font)
 
     def draw(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((18, 46, 67))
         self.screen.blit(self.title, self.title_rect)
         self.draw_button(self.pvai_button, "PvAI", self.button_font)
         self.draw_button(self.aivai_button, "AIvAI", self.button_font)

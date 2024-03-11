@@ -1,6 +1,5 @@
+from board import Board
 import numpy as np
-
-from src.board import Board
 
 MAX_DEPTH = 4  # The maximum depth the MiniMax algorithm will reach
 WINNING_SCORE = 1_000_000
@@ -14,7 +13,6 @@ SCORE_IN_A_ROW = {
     2: 2,
     1: 1,
 }
-
 
 class MiniMax:
     def __init__(self, board: Board, piece: int, use_alpha_beta=True):

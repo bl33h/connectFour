@@ -1,8 +1,6 @@
 import math
-
 import pygame
-
-from src.connect4 import Connect4
+from connect4 import Connect4
 
 
 class GUI:
@@ -68,7 +66,7 @@ class GUI:
                     self.draw_board()
 
         # Game over
-        pygame.draw.rect(self.screen, (0, 0, 0), (0, 0, self.width, self.square_size))
+        pygame.draw.rect(self.screen, (18, 46, 67), (0, 0, self.width, self.square_size))
         self.game.turn = (self.game.turn % 2) + 1  # Change turn to the winner
         label = self.font.render(
             f"Player {self.game.turn} wins!",
@@ -88,11 +86,11 @@ class GUI:
             for r in range(6):
                 pygame.draw.rect(
                     self.screen,
-                    (0, 0, 255),
+                    (24, 138, 225),
                     (c * self.square_size, r * self.square_size + self.square_size, self.square_size, self.square_size)
                 )
 
-                circle_color = (0, 0, 0)
+                circle_color = (18, 46, 67)
                 if board_state[r][c] == 1:
                     circle_color = (255, 0, 0)
                 elif board_state[r][c] == 2:
@@ -113,7 +111,7 @@ class GUI:
         """
         Show the piece to drop
         """
-        pygame.draw.rect(self.screen, (0, 0, 0), (0, 0, self.width, self.square_size))
+        pygame.draw.rect(self.screen, (18, 46, 67), (0, 0, self.width, self.square_size))
         pygame.draw.circle(
             self.screen,
             (255, 0, 0),
