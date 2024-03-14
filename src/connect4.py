@@ -17,7 +17,13 @@ class Connect4:
         if mode == 'aivai':
             self.agent1 = MiniMax(board=self.board, piece=1, use_alpha_beta=False)
         elif mode == 'pvai_td':
-            self.agent1 = TemporalDifferenceAgent(board=self.board, piece=2)
+            self.agent2 = TemporalDifferenceAgent(board=self.board, piece=2)
+        elif mode == 'mxvtd':
+            self.agent1 = MiniMax(board=self.board, piece=1, use_alpha_beta=False)
+            self.agent2 = TemporalDifferenceAgent(board=self.board, piece=2)
+        elif mode == 'mxvtd-ab':
+            self.agent1 = MiniMax(board=self.board, piece=1, use_alpha_beta=True)
+            self.agent2 = TemporalDifferenceAgent(board=self.board, piece=2)
 
         self.is_game_over = False
 

@@ -10,12 +10,14 @@ class MainMenu:
         self.button_font = pygame.font.Font(None, 36)
         self.title = self.font.render("Game Menu", True, (255, 255, 255))
         self.title_rect = self.title.get_rect(center=(400, 80))
-        self.pvai_button = pygame.Rect(300, 200, 200, 50)
-        self.aivai_button = pygame.Rect(300, 300, 200, 50)
-        self.pva_td_button = pygame.Rect(300, 500, 200, 50)
+        self.pvai_button = pygame.Rect(300, 150, 225, 50)
+        self.aivai_button = pygame.Rect(300, 225, 225, 50)
+        self.pva_td_button = pygame.Rect(300, 300, 225, 50)
+        self.mxvtd_button = pygame.Rect(300, 375, 225, 50)
+        self.mxvtd_ab_button = pygame.Rect(300, 450, 225, 50)
         button_width = 305
         screen_width = 800
-        self.alpha_beta_toggle = pygame.Rect((screen_width - button_width) / 2, 400, button_width, 50)
+        self.alpha_beta_toggle = pygame.Rect((screen_width - button_width) / 2, 525, button_width, 50)
         self.alpha_beta_enabled = True
 
     def handle_event(self, event):
@@ -37,7 +39,19 @@ class MainMenu:
                 game.play()
                 if not game.is_active:
                     return False
-
+                
+            elif self.mxvtd_button.collidepoint(event.pos):
+                game = Game('mxvtd', self.alpha_beta_enabled)
+                game.play()
+                if not game.is_active:
+                    return False
+            
+            elif self.mxvtd_ab_button.collidepoint(event.pos):
+                game = Game('mxvtd-ab', self.alpha_beta_enabled)
+                game.play()
+                if not game.is_active:
+                    return False
+                
             elif self.alpha_beta_toggle.collidepoint(event.pos):
                 self.alpha_beta_enabled = not self.alpha_beta_enabled
 
@@ -60,7 +74,9 @@ class MainMenu:
         self.draw_button(self.aivai_button, "AIvAI", self.button_font)
         self.draw_button(self.alpha_beta_toggle, "Alpha-Beta Pruning: " + ("ON" if self.alpha_beta_enabled else "OFF"),
                          self.button_font)
-        self.draw_button(self.pva_td_button, "PvAI-TD", self.button_font)
+        self.draw_button(self.pva_td_button, "P vs AI-TD", self.button_font)
+        self.draw_button(self.mxvtd_button, "Minimax vs TD", self.button_font)
+        self.draw_button(self.mxvtd_ab_button, "Minimax-AB vs TD", self.button_font)
 
     def run(self):
         while True:
