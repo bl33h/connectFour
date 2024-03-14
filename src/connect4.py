@@ -1,4 +1,5 @@
 from agents.minimax import MiniMax
+from agents.temporal_difference import TemporalDifferenceAgent
 from board import Board
 
 class Connect4:
@@ -15,6 +16,8 @@ class Connect4:
         self.agent2 = MiniMax(board=self.board, piece=2, use_alpha_beta=use_alpha_beta)
         if mode == 'aivai':
             self.agent1 = MiniMax(board=self.board, piece=1, use_alpha_beta=False)
+        elif mode == 'pvai_td':
+            self.agent1 = TemporalDifferenceAgent(board=self.board, piece=2)
 
         self.is_game_over = False
 
