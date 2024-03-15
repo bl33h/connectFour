@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Board:
     def __init__(self, rows: int = 6, columns: int = 7, state: np.ndarray = None):
         self.rows = rows

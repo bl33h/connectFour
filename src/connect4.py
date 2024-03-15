@@ -1,6 +1,7 @@
-from agents.minimax import MiniMax
-from agents.temporal_difference import TemporalDifferenceAgent
-from board import Board
+from src.agents.minimax import MiniMax
+from src.agents.temporal_difference import TemporalDifferenceAgent
+from src.board import Board
+
 
 class Connect4:
     """

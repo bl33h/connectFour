@@ -1,6 +1,9 @@
 import sys
+
 import pygame
-from game import Game
+
+from src.game import Game
+
 
 class MainMenu:
     def __init__(self):
@@ -33,25 +36,25 @@ class MainMenu:
                 game.play()
                 if not game.is_active:  # check if the game is still active
                     return False  # return False to indicate that the game has ended
-            
+
             elif self.pva_td_button.collidepoint(event.pos):  # Check if PvsAITD button is clicked
                 game = Game('pvai_td', self.alpha_beta_enabled)  # Start PvsAITD game
                 game.play()
                 if not game.is_active:
                     return False
-                
+
             elif self.mxvtd_button.collidepoint(event.pos):
                 game = Game('mxvtd', self.alpha_beta_enabled)
                 game.play()
                 if not game.is_active:
                     return False
-            
+
             elif self.mxvtd_ab_button.collidepoint(event.pos):
                 game = Game('mxvtd-ab', self.alpha_beta_enabled)
                 game.play()
                 if not game.is_active:
                     return False
-                
+
             elif self.alpha_beta_toggle.collidepoint(event.pos):
                 self.alpha_beta_enabled = not self.alpha_beta_enabled
 

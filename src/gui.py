@@ -1,6 +1,8 @@
 import math
+
 import pygame
-from connect4 import Connect4
+
+from src.connect4 import Connect4
 
 
 class GUI:
