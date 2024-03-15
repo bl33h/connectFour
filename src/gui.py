@@ -27,7 +27,7 @@ class GUI:
         Run the game
         """
         self.draw_board()
-        if self.game.mode == 'pvai':
+        if self.game.mode == 'pvai' or self.game.mode == 'pvai_td':
             while not self.game.is_game_over:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
