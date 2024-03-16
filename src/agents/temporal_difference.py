@@ -39,6 +39,42 @@ class TemporalDifferenceAgent:
         return score
 
     def get_best_move(self) -> int:
-        vector = self.board.vectorize()
-        print(vector)
-        return self.board.get_valid_locations()[0]
+        """
+        Get the best move using Temporal Difference
+        """
+        self.epsilon *= self.epsilon_decay
+        valid_locations = self.board.get_valid_locations()
+
+        if random.uniform(0, 1) < self.epsilon:
+            return random.choice(valid_locations)
+
+        best_move = None
+        best_value = -np.inf
+
+        for col in valid_locations:
+            row = self.board.get_next_open_row(col)
+            if row is None:
+                continue
+
+            # Block opponent's immediate winning move
+            temp_board = self.board.copy()
+            temp_board.drop_piece(row, col, 3 - self.piece)
+            if temp_board.is_winning_move(3 - self.piece):
+                return col  # Block the win
+
+            # Evaluate move for the agent
+            temp_board = self.board.copy()
+            temp_board.drop_piece(row, col, self.piece)
+            state = tuple(temp_board.state.flatten())
+            base_value = self.values.get(state, 0)
+
+            heuristic_value = self.heuristic_evaluation(temp_board, self.piece)
+            value = base_value + heuristic_value + random.uniform(0, 0.01)
+
+            if value > best_value:
+                best_value = value
+                best_move = col
+
+        if best_move is None:
+            return random.choice(valid_locations)
+        return best_move
